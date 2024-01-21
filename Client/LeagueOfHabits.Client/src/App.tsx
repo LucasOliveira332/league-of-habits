@@ -1,20 +1,25 @@
 // import { useState } from 'react'
 import './App.css'
 
-const CheckBox = ({numberOfCheckBox}: {numberOfCheckBox : number[]}) => {
+
+const CheckBox = ({habitName}: {habitName: string}) => {
+  const week = Array.from({length: 365}, (_,index) => index + 1)
   return (
     <>
-      {numberOfCheckBox.map((number) => (<input type="checkbox" />))}
+      <div className='habit-check-box'>
+      <h4 className='habit-name'>{habitName}</h4>
+      {week.map(() => (<input className='habit-check' type="checkbox" />))}
+      </div> 
     </>
   )
 }
 
 function App() {
-  // const [count, setCount] = useState(0)
+
 
   return (
     <>
-      <CheckBox numberOfCheckBox={[1,2,3,4]}/>
+      <CheckBox habitName = {'Study'}/>
     </>
   )
 }

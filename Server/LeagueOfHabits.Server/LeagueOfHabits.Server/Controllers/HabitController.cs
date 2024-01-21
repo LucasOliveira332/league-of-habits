@@ -63,7 +63,7 @@ namespace LeagueOfHabits.Server.Controllers
         }
 
         [HttpPost("{id}"), Authorize]
-        public async Task<IActionResult> CheckDayHabit(int habitId)
+        public async Task<IActionResult> CheckDayHabit(string id, int habitId)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var completeDays = new CompleteDay() { Data = DateTime.Now, HabitId = habitId };

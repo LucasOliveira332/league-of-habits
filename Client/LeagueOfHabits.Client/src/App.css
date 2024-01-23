@@ -5,7 +5,17 @@
   margin: 0;
 }
 
+.habit-check-box{
+  border: 1px solid white;
+  padding: 10px;
+  border-radius: 15px;
+}
+
 .habit-name{
   padding: 0;
   margin: 0;
+}
+
+.checkbox-hidden{
+  opacity: 0;
 }

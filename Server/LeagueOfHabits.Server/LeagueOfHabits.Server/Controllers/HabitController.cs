@@ -63,13 +63,33 @@ namespace LeagueOfHabits.Server.Controllers
         }
 
         [HttpPost("{id}"), Authorize]
-        public async Task<IActionResult> CheckDayHabit(string id, int habitId)
+        public async Task<IActionResult> CheckDayHabit(int id)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var completeDays = new CompleteDay() { Data = DateTime.Now, HabitId = habitId };
+            var completeDays = new CompleteDay() { Data = DateTime.Now, HabitId = id };
 
             _dataContext.CompleteDays.Add(completeDays);
             await _dataContext.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPut("{id}"), Authorize]
+        public async Task<IActionResult> UpdateHabit(int id, HabitUpdateDTO habitUpdate)
+        {
+            var habit = await _dataContext.Habits.SingleOrDefaultAsync(h => h.Id == id);
+
+            if (habit == null) return NotFound();
+
+            habit.Name = habitUpdate.Name ?? habit.Name;
+            habit.Description = habitUpdate.Description ?? habit.Description;
+            habit.LastUpdateDate  = DateTime.UtcNow;
+            if (!string.IsNullOrEmpty(habitUpdate.UrlImage))
+                habit.UrlImage = habitUpdate.UrlImage;
+            if(habitUpdate.DaysOfWeek.Count != 0)
+                habit.DaysOfWeek = _dataContext.DaysOfTheWeek.Where(d => habitUpdate.DaysOfWeek.Contains(d.Id)).ToList();
+
+            _dataContext.Habits.Update(habit);
+            await _dataContext.SaveChangesAsync();
+
             return Ok();
         }
     }

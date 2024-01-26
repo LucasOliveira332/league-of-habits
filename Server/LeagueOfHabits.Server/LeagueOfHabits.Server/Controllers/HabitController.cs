@@ -4,6 +4,7 @@ using LeagueOfHabits.Server.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Security.Claims;
 
 namespace LeagueOfHabits.Server.Controllers
@@ -67,6 +68,8 @@ namespace LeagueOfHabits.Server.Controllers
         {
             var completeDays = new CompleteDay() { Data = DateTime.Now, HabitId = id };
 
+            if (completeDays.Habit == null) return NotFound();
+
             _dataContext.CompleteDays.Add(completeDays);
             await _dataContext.SaveChangesAsync();
             return Ok();
@@ -75,16 +78,33 @@ namespace LeagueOfHabits.Server.Controllers
         [HttpPut("{id}"), Authorize]
         public async Task<IActionResult> UpdateHabit(int id, HabitUpdateDTO habitUpdate)
         {
-            var habit = await _dataContext.Habits.SingleOrDefaultAsync(h => h.Id == id);
+            Habit habit = null;
 
-            if (habit == null) return NotFound();
+            if (habitUpdate.DaysOfWeek.Count() != 0)
+            {
+                 habit = await _dataContext.Habits.Include(h => h.DaysOfWeek).SingleOrDefaultAsync(h => h.Id == id);
+            }
+            else
+            {
+                 habit = await _dataContext.Habits.SingleOrDefaultAsync(h => h.Id == id);
+            }
+
+
+            if (habit == null)
+                return NotFound();
+
+            habit.DaysOfWeek.Clear();
 
             habit.Name = habitUpdate.Name ?? habit.Name;
+
             habit.Description = habitUpdate.Description ?? habit.Description;
+
             habit.LastUpdateDate  = DateTime.UtcNow;
+
             if (!string.IsNullOrEmpty(habitUpdate.UrlImage))
                 habit.UrlImage = habitUpdate.UrlImage;
-            if(habitUpdate.DaysOfWeek.Count != 0)
+
+            if (habitUpdate.DaysOfWeek.Count != 0)
                 habit.DaysOfWeek = _dataContext.DaysOfTheWeek.Where(d => habitUpdate.DaysOfWeek.Contains(d.Id)).ToList();
 
             _dataContext.Habits.Update(habit);

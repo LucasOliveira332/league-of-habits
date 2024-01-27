@@ -1,4 +1,5 @@
 using LeagueOfHabits.Server.Data;
+using LeagueOfHabits.Server.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -21,6 +22,8 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddIdentityApiEndpoints<IdentityUser>()
     .AddEntityFrameworkStores<DataContext>();
+
+builder.Services.AddScoped<HabitRepository>();
 
 builder.Services.AddSwaggerGen(options =>
 {

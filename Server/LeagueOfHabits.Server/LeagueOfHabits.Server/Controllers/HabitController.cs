@@ -1,6 +1,7 @@
 using LeagueOfHabits.Server.Data;
 using LeagueOfHabits.Server.DTO;
 using LeagueOfHabits.Server.Models;
+using LeagueOfHabits.Server.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,25 +11,22 @@ namespace LeagueOfHabits.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class HabitController(DataContext dataContext) : ControllerBase
+    public class HabitController(DataContext dataContext, HabitRepository habitRepository) : ControllerBase
     {
         private readonly DataContext _dataContext = dataContext;
+        private readonly HabitRepository _habitRepository = habitRepository;
 
         [HttpGet, Authorize]
-        public IActionResult GetHabits()
+        public ActionResult<List<HabitCreateDTO>> GetHabits()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var habits = _dataContext.Habits
-                .Include(h => h.DaysOfWeek)
-                .Where(h => h.UserId == userId)
-                .Select(h => new { 
-                    HabitId = h.Id, 
-                    HabitName = h.Name, 
-                    HabitDescription = h.Description,
-                    DaysOfWeekIds = h.DaysOfWeek.Select(d => d.Id).ToList()
-                })
-                .ToList();
+            if (userId == null) 
+            { 
+                return NotFound("User not found");
+             }
+
+            var habits = _habitRepository.GetHabits(userId);
 
             return Ok(habits);
         }

@@ -66,16 +66,33 @@ namespace LeagueOfHabits.Server.Controllers
         {
             var completeDays = new CompleteDay() { Data = DateTime.Now, HabitId = id };
 
-            Habit habit = await _dataContext.Habits.Include(h => h.DaysOfWeek).SingleOrDefaultAsync(h => h.Id == completeDays.HabitId);
+            var existingDay = await _dataContext.CompleteDays
+                .SingleOrDefaultAsync(c => c.HabitId == id && c.Data.Day == completeDays.Data.Day);
 
-            if (habit == null) return NotFound();
+            if (existingDay != null) return BadRequest();
 
-            var days = _dataContext.CompleteDays.SingleOrDefaultAsync(c => c.Data.Day == completeDays.Data.Day);
+            var habit = await _dataContext.Habits
+                .Include(h => h.DaysOfWeek)
+                .Select(h => new {
+                    HabitId =  h.Id, 
+                    DaysOfWeekNames = h.DaysOfWeek.Select(d => d.Name).ToList()
+                })
+                .SingleOrDefaultAsync(h => h.HabitId == completeDays.HabitId);
 
-            if (days == null) return BadRequest(); 
+            if (habit == null) 
+                return BadRequest();
+
+            string dayOfWeek = completeDays.Data.DayOfWeek.ToString();
+
+            bool isDayIncluded = habit.DaysOfWeekNames.Contains(dayOfWeek);
+
+            if (!isDayIncluded) 
+                return BadRequest();
 
             _dataContext.CompleteDays.Add(completeDays);
+
             await _dataContext.SaveChangesAsync();
+
             return Ok();
         }
 

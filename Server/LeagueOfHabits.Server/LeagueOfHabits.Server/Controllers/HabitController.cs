@@ -4,7 +4,6 @@ using LeagueOfHabits.Server.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Security.Claims;
 
 namespace LeagueOfHabits.Server.Controllers
@@ -62,13 +61,18 @@ namespace LeagueOfHabits.Server.Controllers
             if (response > 0) return Ok();
             else return BadRequest();
         }
-
         [HttpPost("{id}"), Authorize]
         public async Task<IActionResult> CheckDayHabit(int id)
         {
             var completeDays = new CompleteDay() { Data = DateTime.Now, HabitId = id };
 
-            if (completeDays.Habit == null) return NotFound();
+            Habit habit = await _dataContext.Habits.Include(h => h.DaysOfWeek).SingleOrDefaultAsync(h => h.Id == completeDays.HabitId);
+
+            if (habit == null) return NotFound();
+
+            var days = _dataContext.CompleteDays.SingleOrDefaultAsync(c => c.Data.Day == completeDays.Data.Day);
+
+            if (days == null) return BadRequest(); 
 
             _dataContext.CompleteDays.Add(completeDays);
             await _dataContext.SaveChangesAsync();

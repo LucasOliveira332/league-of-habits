@@ -4,15 +4,14 @@ import './App.css';
 function MonthCheckBox({ monthNumber }: { monthNumber: number }) {
   const week = Array.from({ length: 35 }, (_, index) => index + 1);
   const date = new Date(2024, monthNumber, 0);
-  const inicialDate = date.getDay() + 1;
-  const finalDate = new Date(2024, monthNumber + 1, 0).getDate() + inicialDate;
+  const initialDate = date.getDay() !== 6 ? date.getDay() + 1 : 0;
+  const finalDate = new Date(2024, monthNumber + 1, 0).getDate() + initialDate;
 
   return (
     <>
       <div className="month">
         {week.map((_, index) => {
-          console.log(index < finalDate);
-          if (index < inicialDate) {
+          if (index < initialDate) {
             return (
               <>
                 <input
@@ -48,7 +47,7 @@ const RenderCheckBox = () => {
     <>
       <div className="checkbox-months">
         {months.map((month) => (
-          <MonthCheckBox monthNumber={month - 1} />
+          <MonthCheckBox monthNumber={8} />
         ))}
       </div>
     </>

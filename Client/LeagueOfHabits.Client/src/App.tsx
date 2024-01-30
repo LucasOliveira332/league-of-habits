@@ -3,8 +3,7 @@ import './App.css';
 
 function MonthCheckBox({ monthNumber }: { monthNumber: number }) {
   const week = Array.from({ length: 35 }, (_, index) => index + 1);
-  const date = new Date(2024, monthNumber, 0);
-  const initialDate = date.getDay() !== 6 ? date.getDay() + 1 : 0;
+  const initialDate = new Date(2024, monthNumber).getDay();
   const finalDate = new Date(2024, monthNumber + 1, 0).getDate() + initialDate;
 
   return (
@@ -41,14 +40,14 @@ function MonthCheckBox({ monthNumber }: { monthNumber: number }) {
 }
 
 const RenderCheckBox = () => {
-  const months = Array.from({ length: 12 }, (_, index) => index + 1);
+  const months = Array.from({ length: 12 }, (_, index) => index);
 
   return (
     <>
       <div className="checkbox-months">
-        {months.map((month) => (
-          <MonthCheckBox monthNumber={8} />
-        ))}
+        {months.map((month) => {
+          return <MonthCheckBox monthNumber={month} />;
+        })}
       </div>
     </>
   );

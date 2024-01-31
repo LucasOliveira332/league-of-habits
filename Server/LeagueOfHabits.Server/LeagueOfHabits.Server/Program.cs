@@ -5,7 +5,21 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 
+var AllowAllPolicy = "AllowAllPolicy";
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: AllowAllPolicy,
+                      policy =>
+                      {
+                          policy
+                          .AllowAnyHeader()
+                          .AllowAnyOrigin()
+                          .AllowAnyMethod();
+                      });
+});
 
 // Add services to the container.
 
@@ -45,6 +59,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(AllowAllPolicy);
 
 app.MapIdentityApi<IdentityUser>();
 

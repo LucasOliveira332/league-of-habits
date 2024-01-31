@@ -1,0 +1,30 @@
+services:
+  habitsdb:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=SenhaComplexa123@
+  habitsapi:
+    image: ${DOCKER_REGISTRY-}habitsapi
+    build:
+      context: ./Server/LeagueOfHabits.Server
+      dockerfile: LeagueOfHabits.Server/Dockerfile
+    container_name: habitsapi
+    environment:
+     - ASPNETCORE_ENVIRONMENT=Prodution
+     - "ConnectionStrings:DockerString=Server=127.0.0.1,1433;Database=LeagueOfHabits;User Id=SA;Password=SenhaComplexa123@"
+    depends_on:
+     - habitsdb
+    ports:
+    - "8080:8080"
+  
+  habitsfront:
+    image: ${DOCKER_REGISTRY-}habitsfront
+    build:
+      context: Client/LeagueOfHabits.Client
+      dockerfile: Dockerfile
+    container_name: habitsfront
+    depends_on:
+      - habitsdb
+    ports:
+      - "80:80"

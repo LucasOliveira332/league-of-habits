@@ -7,8 +7,11 @@ function MonthCheckBox({ monthNumber }: { monthNumber: number }) {
     day: 'numeric',
   });
 
+  const apiDate = new Date('2024-01-25T00:00:00');
+
   const week = Array.from({ length: 35 }, (_, index) => index + 1);
   const date = new Date(2024, monthNumber);
+
   const firstDayOfTheWeek = date.getDay();
   const finalDate =
     new Date(2024, monthNumber + 1, 0).getDate() + firstDayOfTheWeek;
@@ -25,10 +28,15 @@ function MonthCheckBox({ monthNumber }: { monthNumber: number }) {
               </>
             );
           } else if (index < finalDate) {
-            const formatDate = formatDatePtBr.format(date);
+            const formatDate = formatDatePtBr.format(date.setDate(index));
             return (
               <>
-                <span title={formatDate} className="box"></span>
+                <span
+                  title={formatDate}
+                  className={
+                    apiDate.getTime() == date.getTime() ? 'box isCheck' : 'box'
+                  }
+                ></span>
               </>
             );
           }

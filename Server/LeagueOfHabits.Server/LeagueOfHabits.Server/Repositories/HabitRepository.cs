@@ -11,6 +11,7 @@ namespace LeagueOfHabits.Server.Repositories
         {
             var habitResponse = _dataContext.Habits
                 .Include(h => h.DaysOfWeek)
+                .Include(h => h.CompleteDays)
                 .Where(h => h.UserId == userId)
                 .Select(h => new HabitResponseDTO 
                 {
@@ -18,7 +19,8 @@ namespace LeagueOfHabits.Server.Repositories
                     Name = h.Name,
                     Description = h.Description,
                     ImageUrl = h.UrlImage,
-                    DaysOfWeekIds = h.DaysOfWeek.Select(h => h.Id).ToList()
+                    DaysOfWeekIds = h.DaysOfWeek.Select(h => h.Id).ToList(),
+                    CompleteDaysDate = h.CompleteDays.Select(h => h.Data).ToList()
                 })
                 .ToList();
 

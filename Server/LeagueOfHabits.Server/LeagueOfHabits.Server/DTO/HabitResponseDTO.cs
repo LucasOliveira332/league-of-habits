@@ -7,5 +7,6 @@
         public string? Description { get; set; }
         public string? ImageUrl { get; set; }
         public List<int> DaysOfWeekIds { get; set; }
+        public List<DateTime> CompleteDaysDate { get; set; }
     }
 }

@@ -3,9 +3,12 @@
   padding: 0;
 }
 
+body {
+  background: #0d1117;
+}
+
 #main {
   display: grid;
-  background: #131214;
   display: grid;
   grid-template-columns: 0.5fr 1fr 0.5fr;
 }

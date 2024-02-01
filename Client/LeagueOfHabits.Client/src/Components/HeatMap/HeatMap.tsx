@@ -1,38 +1,34 @@
 import './HeatMap.css';
 function MonthCheckBox({ monthNumber }: { monthNumber: number }) {
+  const formatDatePtBr = new Intl.DateTimeFormat('pt-BR', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
   const week = Array.from({ length: 35 }, (_, index) => index + 1);
-  const initialDate = new Date(2024, monthNumber).getDay();
-  const finalDate = new Date(2024, monthNumber + 1, 0).getDate() + initialDate;
+  const date = new Date(2024, monthNumber);
+  const firstDayOfTheWeek = date.getDay();
+  const finalDate =
+    new Date(2024, monthNumber + 1, 0).getDate() + firstDayOfTheWeek;
 
   return (
     <>
       <div className="month">
         {week.map((_, index) => {
-          if (index < initialDate) {
+          if (index < firstDayOfTheWeek) {
             return (
               <>
-                <input
-                  key={index}
-                  title={'formatDate'}
-                  className={'checkbox-hidden'}
-                  type="checkbox"
-                />
+                <span className="box checkbox-hidden"></span>
                 {(index + 1) % 7 == 0 ? <br></br> : ' '}
               </>
             );
           } else if (index < finalDate) {
+            const formatDate = formatDatePtBr.format(date);
             return (
               <>
-                <input
-                  key={index}
-                  title={'formatDate'}
-                  className="checkbox"
-                  type="checkbox"
-                  disabled={true}
-                  checked={true}
-                />
-                <span className="box"></span>
-                {(index + 1) % 7 == 0 ? <br></br> : ' '}
+                <span title={formatDate} className="box"></span>
               </>
             );
           }

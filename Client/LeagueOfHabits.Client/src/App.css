@@ -8,15 +8,8 @@ body {
 }
 
 #main {
+  text-align: center;
   display: grid;
-  display: grid;
-  grid-template-columns: 0.5fr 0.5fr 0.5fr;
-}
-
-.checkbox-months {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  /* grid-template-columns: auto auto auto auto auto auto; */
-  gap: 10px;
-  margin: 0 auto;
+  grid-template-columns: 0.5fr 0.4fr 0.5fr;
+  margin-top: 20px;
 }

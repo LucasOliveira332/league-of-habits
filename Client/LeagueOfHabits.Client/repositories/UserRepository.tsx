@@ -1,15 +1,19 @@
 import { apiUrl } from '../config/config';
+import { UserLoginDTO } from '../Request/UserLoginDTO.tsx';
 class UserRepository {
-  private paramUrl: string;
-  private method: string;
-  constructor(paramUrl: string, method: string) {
-    (this.paramUrl = paramUrl), (this.method = method);
-  }
+  async login(user: UserLoginDTO) {
+    const method = 'POST';
+    const header = { 'Content-Type': 'application/json' };
 
-  login() {
-    const method = 'Post';
-    const headers = { 'Content-Type': 'application/json' };
+    const response = await fetch(apiUrl + 'login', {
+      method: method,
+      headers: header,
+      body: JSON.stringify(user),
+    });
 
-    fetch(apiUrl + '/login');
+    const responseJson = await response.json();
+    console.log(responseJson);
   }
 }
+
+export { UserRepository };

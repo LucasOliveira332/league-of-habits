@@ -1,24 +1,15 @@
-interface User {
-    email: string,
-    password: string
-}
-
+import { apiUrl } from '../config/config';
 class UserRepository {
-    private baseUrl: string;
-    constructor(baseUrl: string) {
-        this.baseUrl = baseUrl;
-    }
+  private paramUrl: string;
+  private method: string;
+  constructor(paramUrl: string, method: string) {
+    (this.paramUrl = paramUrl), (this.method = method);
+  }
 
-    login(user: User){
-        const method = 'Post'
-        const headers = {'Content-Type': 'application/json'} 
+  login() {
+    const method = 'Post';
+    const headers = { 'Content-Type': 'application/json' };
 
-        fetch(this.baseUrl + '/login',)
-    }
+    fetch(apiUrl + '/login');
+  }
 }
-
-const baseUrl = 'https://localhost:7218/';
-
-const userRepository = new UserRepository(baseUrl);
-
-console.log(userRepository)

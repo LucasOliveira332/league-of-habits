@@ -1,4 +1,4 @@
-import { apiUrl } from '../config/config';
+import { apiUrl } from '../../config/config';
 class HabitRepository {
   paramUrl: string;
   method: string;

@@ -1,4 +1,4 @@
-import { apiUrl } from '../config/config';
+import { apiUrl } from '../../config/config.tsx';
 import UserLoginDTO from '../Request/UserLoginDTO.tsx';
 class UserRepository {
   async login(user: UserLoginDTO) {

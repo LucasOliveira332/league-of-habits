@@ -17,4 +17,4 @@ class HabitRepository {
   }
 }
 
-export default HabitRepository;
+export { HabitRepository };

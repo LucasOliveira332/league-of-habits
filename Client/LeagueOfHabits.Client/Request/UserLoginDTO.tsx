@@ -3,4 +3,4 @@ interface UserLoginDTO {
   password: string;
 }
 
-export { UserLoginDTO };
+export default UserLoginDTO;

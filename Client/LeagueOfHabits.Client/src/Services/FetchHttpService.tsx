@@ -1,22 +1,16 @@
-interface ResponseFetchInterface {
-  statusCode : number,
-  promise : Promise<any>
-}
-
 interface FetchHttpServiceInterface {
-   request(url: string, method: string, headers: Record<string, string> | undefined, body: string): Promise<ResponseFetchInterface>
-
-class FetchHttpService implements FetchHttpServiceInterface {
-  async request(url: string, method: string, headers: Record<string, string> | undefined, body: string): Promise<ResponseFetchInterface> {
+    makeRequest(url: string, method: string, headers: Record<string, string> | undefined, body: string): Promise<any>
+}
+export default class FetchHttpService implements FetchHttpServiceInterface {
+  async makeRequest(url: string, method: string, headers: Record<string, string> | undefined, body: string): Promise<any> {
     const response = await fetch(url, {
       method: method,
       headers: headers,
       body: body
-    })
+    });
 
-    return {
-      statusCode: response.status,
-      promise: response.status === 200 ? response.json(): Promise.resolve()
-    }
+    if (!response.ok) return response.status
+
+    return response.json();
   }
 }

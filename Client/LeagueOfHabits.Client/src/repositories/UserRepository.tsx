@@ -2,6 +2,7 @@ import { apiUrl } from '../../config/config.tsx';
 import UserLoginDTO from '../request/UserLoginDTO.tsx';
 import FetchHttpService from '../Services/FetchHttpService.tsx';
 import tokenResponseDTO from '../response/tokenReponseDTO.tsx'
+import LocalStorageService from '../Services/LocalStorageService.tsx';
 
 class UserRepository {
   async login(userCredentials: UserLoginDTO) {
@@ -19,7 +20,7 @@ class UserRepository {
       if(!response){
         console.log('Login failed. No response received.')
       } else{
-        console.log(response.refreshToken)
+        LocalStorageService.setItem(response.tokenType, response.accessToken)
       }
     }catch(error){
       console.log("An error occurred during login:", error);

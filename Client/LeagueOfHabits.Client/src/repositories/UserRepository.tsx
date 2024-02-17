@@ -20,7 +20,7 @@ class UserRepository {
       if(!response){
         console.log('Login failed. No response received.')
       } else{
-        LocalStorageService.setItem(response.tokenType, response.accessToken)
+        LocalStorageService.setItem(response.tokenType, response)
       }
     }catch(error){
       console.log("An error occurred during login:", error);

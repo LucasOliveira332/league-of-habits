@@ -2,9 +2,11 @@ import { RenderHeatMap } from './components/heatMap/HeatMap';
 import './App.css';
 import UserRepository from './repositories/UserRepository';
 import UserLoginDTO from './request/UserLoginDTO';
+import { HabitRepository } from './repositories/HabitRepository';
 
 function App() {
   const userRepository = new UserRepository();
+  const habitRepository = new HabitRepository();
 
   const user: UserLoginDTO = {
     email: 'lucas.g.oliveira10@hotmail.com',
@@ -17,6 +19,7 @@ function App() {
         <div className="habit-menu">
           <h1>habit-menu</h1>
           <button onClick={() => userRepository.login(user)}>LOGIN</button>
+          <button onClick={() => habitRepository.getHabits()}>HABITS</button>
         </div>
         <div>
           <RenderHeatMap />

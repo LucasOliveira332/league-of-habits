@@ -1,7 +1,7 @@
 import FetchHttpServiceInterface from "../interface/FetchHttpServiceInterface";
 
 export default class FetchHttpService implements FetchHttpServiceInterface {
-  async makeRequest(url: string, method: string, headers: Record<string, string> | undefined, body: string): Promise<any> {
+  async makeRequest(url: string, method: string, headers: Record<string, string> | undefined, body?: string): Promise<any> {
     const response = await fetch(url, {
       method: method,
       headers: headers,

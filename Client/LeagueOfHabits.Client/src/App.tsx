@@ -19,7 +19,6 @@ function App() {
         <div className="habit-menu">
           <h1>habit-menu</h1>
           <button onClick={() => userRepository.login(user)}>LOGIN</button>
-          <button onClick={() => habitRepository.getHabits()}>HABITS</button>
         </div>
         <div>
           <RenderHeatMap />

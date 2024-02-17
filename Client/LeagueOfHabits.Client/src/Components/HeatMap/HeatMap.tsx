@@ -1,16 +1,37 @@
+import { useEffect, useState } from 'react';
+import HabitRepository from '../../repositories/HabitRepository';
 import './HeatMap.css';
 function MonthCheckBox({ monthNumber }: { monthNumber: number }) {
+  const [checkedDays, setCheckedDays] = useState(null);
+
   const formatDatePtBr = new Intl.DateTimeFormat('pt-BR', {
     weekday: 'short',
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
+  const habitRepository = new HabitRepository()
+  useEffect(() => {
+    const fetchData = async () => {
+      setCheckedDays(await habitRepository.getCheckedDays());
+    }
+  fetchData();
+  }, []);
 
-  const apiDate = new Date('2024-01-25T00:00:00');
+  const verifyIfDayIsChecked =  (timeInMilesseconds) => {
+    if(checkedDays){
+      const isCheckd = checkedDays.includes(timeInMilesseconds)
+      return isCheckd ? 'box isCheck' : 'box'
+    } 
+    return 'box'
+  }
+
+
 
   const week = Array.from({ length: 35 }, (_, index) => index + 1);
   const date = new Date(2024, monthNumber);
+
+  // console.log(date)
 
   const firstDayOfTheWeek = date.getDay();
   const finalDate =
@@ -28,7 +49,7 @@ function MonthCheckBox({ monthNumber }: { monthNumber: number }) {
               key={index}
               title={formatDate}
               className={
-                apiDate.getTime() == date.getTime() ? 'box isCheck' : 'box'
+                verifyIfDayIsChecked(date.getTime())
               }
             ></span>
           );

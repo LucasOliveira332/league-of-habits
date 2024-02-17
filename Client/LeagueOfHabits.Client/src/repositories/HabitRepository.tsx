@@ -3,14 +3,10 @@ import FetchHttpService from '../Services/FetchHttpService';
 import LocalStorageService from '../Services/LocalStorageService';
 import tokenResponseDTO from '../response/tokenReponseDTO';
 
-class HabitRepository {
-  async getHabits() {
-
+export default class HabitRepository {
+  async getCheckedDays() {
     const token: tokenResponseDTO = LocalStorageService.getItem<tokenResponseDTO>('Bearer')
 
-    console.log(token.tokenType + ' ' + token.accessToken)
-
-    console.log(token)
     const method = 'GET';
     const header = { 'Content-Type': 'application/json',
                      'Authorization': token.tokenType + ' ' + token.accessToken};
@@ -26,7 +22,9 @@ class HabitRepository {
       if(!response){
         console.log('Get habits failed. No response received.')
       }else{
-        console.log(response)
+        const daysOfWeek: Date[]= response[0].completeDaysDate.map(date => new Date(date).getTime())
+
+        return daysOfWeek
       }
     }catch(error){
       console.log("An error ocorred during get habits")

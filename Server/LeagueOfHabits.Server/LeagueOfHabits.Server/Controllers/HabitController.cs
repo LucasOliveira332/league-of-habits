@@ -46,8 +46,8 @@ namespace LeagueOfHabits.Server.Controllers
                 RankId = rank.Id,
                 Name = habitCreateDTO.Name,
                 Description = habitCreateDTO.Description,
-                StartDate = DateTime.Now,
-                LastUpdateDate = DateTime.Now,
+                StartDate = DateTime.Now.Date,
+                LastUpdateDate = DateTime.Now.Date,
                 UrlImage = habitCreateDTO.UrlImage,
                 DaysOfWeek = daysOfWeek
             };
@@ -62,7 +62,7 @@ namespace LeagueOfHabits.Server.Controllers
         [HttpPost("{id}"), Authorize]
         public async Task<IActionResult> CheckDayHabit(int id)
         {
-            var completeDays = new CompleteDay() { Data = DateTime.Now, HabitId = id };
+            var completeDays = new CompleteDay() { Data = DateTime.Now.Date, HabitId = id };
 
             var existingDay = await _dataContext.CompleteDays
                 .SingleOrDefaultAsync(c => c.HabitId == id && c.Data.Day == completeDays.Data.Day);

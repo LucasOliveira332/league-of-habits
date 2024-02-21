@@ -10,7 +10,9 @@ function MonthCheckBox({ monthNumber }: { monthNumber: number }) {
     month: 'long',
     day: 'numeric',
   });
+
   const habitRepository = new HabitRepository()
+
   useEffect(() => {
     const fetchData = async () => {
       setCheckedDays(await habitRepository.getCheckedDays());
@@ -26,12 +28,8 @@ function MonthCheckBox({ monthNumber }: { monthNumber: number }) {
     return 'box'
   }
 
-
-
   const week = Array.from({ length: 35 }, (_, index) => index + 1);
   const date = new Date(2024, monthNumber);
-
-  // console.log(date)
 
   const firstDayOfTheWeek = date.getDay();
   const finalDate =
@@ -43,13 +41,15 @@ function MonthCheckBox({ monthNumber }: { monthNumber: number }) {
         if (index < firstDayOfTheWeek) {
           return <span key={index} className="box checkbox-hidden"></span>;
         } else if (index < finalDate) {
-          const formatDate = formatDatePtBr.format(date.setDate(index));
+          const currentDate = new Date(2024, monthNumber, index + 1 - firstDayOfTheWeek)
+          const formatDate = formatDatePtBr.format(currentDate);
+
           return (
             <span
               key={index}
               title={formatDate}
               className={
-                verifyIfDayIsChecked(date.getTime())
+                verifyIfDayIsChecked(currentDate.getTime())
               }
             ></span>
           );

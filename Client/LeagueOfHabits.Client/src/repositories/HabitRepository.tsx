@@ -7,9 +7,11 @@ export default class HabitRepository {
   async getCheckedDays() {
     const token: tokenResponseDTO = LocalStorageService.getItem<tokenResponseDTO>('Bearer')
 
+    const accessToken = token.tokenType + ' ' + token.accessToken
+
     const method = 'GET';
     const header = { 'Content-Type': 'application/json',
-                     'Authorization': token.tokenType + ' ' + token.accessToken};
+                     'Authorization': accessToken};
     
     const request = new FetchHttpService()
 
@@ -29,9 +31,6 @@ export default class HabitRepository {
     }catch(error){
       console.log("An error ocorred during get habits")
     }
-    
-
-
   }
 }
 

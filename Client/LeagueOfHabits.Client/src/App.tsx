@@ -1,8 +1,8 @@
 import { RenderHeatMap } from './components/heatMap/HeatMap';
 import './App.css';
-import UserRepository from './repositories/UserRepository';
+import UserRepository from './services/UserService';
 import UserLoginDTO from './request/UserLoginDTO';
-import { HabitRepository } from './repositories/HabitRepository';
+import { HabitRepository } from './services/HabitService';
 
 function App() {
   const userRepository = new UserRepository();

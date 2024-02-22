@@ -1,4 +1,4 @@
-import FetchHttpServiceInterface from "../interface/FetchHttpServiceInterface";
+import FetchHttpServiceInterface from "../interface/FetchHttpRepositoryInterface";
 
 export default class FetchHttpService implements FetchHttpServiceInterface {
   async makeRequest(url: string, method: string, headers: Record<string, string> | undefined, body?: string): Promise<any> {

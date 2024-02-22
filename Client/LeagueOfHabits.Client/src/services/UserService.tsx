@@ -1,8 +1,8 @@
 import { apiUrl } from '../../config/config.tsx';
 import UserLoginDTO from '../request/UserLoginDTO.tsx';
-import FetchHttpService from '../Services/FetchHttpService.tsx';
-import tokenResponseDTO from '../response/tokenReponseDTO.tsx'
-import LocalStorageService from '../Services/LocalStorageService.tsx';
+import FetchHttpService from '../repositories/FetchHttpRepository.tsx';
+import tokenResponseDTO from '../response/TokenReponseDTO.tsx'
+import LocalStorageService from './LocalStorageService.tsx';
 
 class UserRepository {
   async login(userCredentials: UserLoginDTO) {

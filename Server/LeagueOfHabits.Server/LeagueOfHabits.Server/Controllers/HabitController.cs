@@ -93,6 +93,24 @@ namespace LeagueOfHabits.Server.Controllers
 
             return Ok();
         }
+        [HttpGet("CheckedDays"), Authorize]
+        public async Task<IActionResult> GetCheckdDays()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var habit = await _dataContext.Habits
+                .Include(h => h.CompleteDays)
+                .Where(h => h.UserId == userId)
+                .Select(h => new
+                {
+                    HabitId = h.Id,
+                    CompleteDaysDate = h.CompleteDays.Select(h => h.Data).ToList(),
+                })
+                .ToListAsync();
+
+
+            return Ok(habit);
+        }
 
         [HttpPut("{id}"), Authorize]
         public async Task<IActionResult> UpdateHabit(int id, HabitUpdateDTO habitUpdate)

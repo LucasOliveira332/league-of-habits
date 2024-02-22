@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import HabitRepository from '../../repositories/HabitRepository';
+import HabitService from '../../services/HabitService';
 import './HeatMap.css';
+
 function MonthCheckBox({ monthNumber }: { monthNumber: number }) {
   const [checkedDays, setCheckedDays] = useState(null);
-
   const formatDatePtBr = new Intl.DateTimeFormat('pt-BR', {
     weekday: 'short',
     year: 'numeric',
@@ -11,21 +11,35 @@ function MonthCheckBox({ monthNumber }: { monthNumber: number }) {
     day: 'numeric',
   });
 
-  const habitRepository = new HabitRepository()
+  const habitService = new HabitService()
 
   useEffect(() => {
     const fetchData = async () => {
-      setCheckedDays(await habitRepository.getCheckedDays());
+      setCheckedDays(await habitService.getCheckedDays());
     }
   fetchData();
   }, []);
 
   const verifyIfDayIsChecked =  (timeInMilesseconds) => {
+    const boxStyle = {
+      backgroundColor: '#161b22',
+      width: '2px',
+      padding: '5px',
+      borderRadius: '2px'
+    };
+
     if(checkedDays){
       const isCheckd = checkedDays.includes(timeInMilesseconds)
-      return isCheckd ? 'box isCheck' : 'box'
+      if (isCheckd){
+        boxStyle.backgroundColor = `rgba(57, 211, 83, ${0.5 + 0.5})`;
+        return boxStyle;
+      }else{
+        boxStyle.backgroundColor = '#161b22';
+        return boxStyle;
+      }
     } 
-    return 'box'
+
+    return boxStyle
   }
 
   const week = Array.from({ length: 35 }, (_, index) => index + 1);
@@ -48,7 +62,7 @@ function MonthCheckBox({ monthNumber }: { monthNumber: number }) {
             <span
               key={index}
               title={formatDate}
-              className={
+              style={
                 verifyIfDayIsChecked(currentDate.getTime())
               }
             ></span>

@@ -1,11 +1,11 @@
 import { apiUrl } from '../../config/config';
-import FetchHttpService from '../Services/FetchHttpService';
-import LocalStorageService from '../Services/LocalStorageService';
-import tokenResponseDTO from '../response/tokenReponseDTO';
+import FetchHttpService from '../repositories/FetchHttpRepository';
+import LocalStorageService from './LocalStorageService';
+import TokenResponseDTO from '../response/tokenReponseDTO';
 
-export default class HabitRepository {
+export default class HabitService {
   async getCheckedDays() {
-    const token: tokenResponseDTO = LocalStorageService.getItem<tokenResponseDTO>('Bearer')
+    const token: TokenResponseDTO = LocalStorageService.getItem<TokenResponseDTO>('Bearer')
 
     const accessToken = token.tokenType + ' ' + token.accessToken
 
@@ -34,4 +34,4 @@ export default class HabitRepository {
   }
 }
 
-export { HabitRepository };
+export { HabitService as HabitRepository };

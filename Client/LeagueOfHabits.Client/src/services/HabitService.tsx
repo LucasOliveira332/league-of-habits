@@ -13,10 +13,10 @@ export default class HabitService {
     const header = { 'Content-Type': 'application/json',
                      'Authorization': accessToken};
     
-    const request = new FetchHttpService()
+
 
     try{
-      const response = await request.makeRequest(
+      const response = await FetchHttpService.makeRequest(
         apiUrl + 'habit',
         method,
         header)
@@ -25,7 +25,6 @@ export default class HabitService {
         console.log('Get habits failed. No response received.')
       }else{
         const daysOfWeek: Date[]= response[0].completeDaysDate.map(date => new Date(date).getTime())
-
         return daysOfWeek
       }
     }catch(error){

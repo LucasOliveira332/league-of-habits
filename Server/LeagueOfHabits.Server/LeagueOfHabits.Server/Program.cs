@@ -23,7 +23,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<IdentityUser>()
     .AddEntityFrameworkStores<DataContext>();
 
-builder.Services.AddScoped<HabitRepository>();
+builder.Services.AddScoped<HabitService>();
 
 builder.Services.AddCors(options =>
 {

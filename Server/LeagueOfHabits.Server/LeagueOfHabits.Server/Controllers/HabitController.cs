@@ -1,5 +1,6 @@
 using LeagueOfHabits.Server.Data;
 using LeagueOfHabits.Server.DTO;
+using LeagueOfHabits.Server.DTO.Response;
 using LeagueOfHabits.Server.Models;
 using LeagueOfHabits.Server.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -11,13 +12,13 @@ namespace LeagueOfHabits.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class HabitController(DataContext dataContext, HabitRepository habitRepository) : ControllerBase
+    public class HabitController(DataContext dataContext, HabitService habitService) : ControllerBase
     {
         private readonly DataContext _dataContext = dataContext;
-        private readonly HabitRepository _habitRepository = habitRepository;
+        private readonly HabitService _habitService = habitService;
 
         [HttpGet, Authorize]
-        public ActionResult<List<HabitCreateDTO>> GetHabits()
+        public async Task<ActionResult<List<HabitCreateDTO>>> GetHabits()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -26,7 +27,7 @@ namespace LeagueOfHabits.Server.Controllers
                 return NotFound("User not found");
              }
 
-            var habits = _habitRepository.GetHabits(userId);
+            var habits = await _habitService.GetHabitsAsync(userId);
 
             return Ok(habits);
         }
@@ -93,23 +94,14 @@ namespace LeagueOfHabits.Server.Controllers
 
             return Ok();
         }
-        [HttpGet("CheckedDays"), Authorize]
+        [HttpGet("CompleteDays"), Authorize]
         public async Task<IActionResult> GetCheckdDays()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var habit = await _dataContext.Habits
-                .Include(h => h.CompleteDays)
-                .Where(h => h.UserId == userId)
-                .Select(h => new
-                {
-                    HabitId = h.Id,
-                    CompleteDaysDate = h.CompleteDays.Select(h => h.Data).ToList(),
-                })
-                .ToListAsync();
+            var completeDays = await _habitService.GetCompleteDaysAsync(userId);
 
-
-            return Ok(habit);
+            return Ok(completeDays);
         }
 
         [HttpPut("{id}"), Authorize]

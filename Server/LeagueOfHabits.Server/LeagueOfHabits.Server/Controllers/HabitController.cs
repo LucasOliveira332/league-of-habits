@@ -107,34 +107,21 @@ namespace LeagueOfHabits.Server.Controllers
         [HttpPut("{id}"), Authorize]
         public async Task<IActionResult> UpdateHabit(int id, HabitUpdateDTO habitUpdate)
         {
-            Habit habit = null;
-
-            if (habitUpdate.DaysOfWeek.Count() != 0)
+            if (habitUpdate == null)
             {
-                 habit = await _dataContext.Habits.Include(h => h.DaysOfWeek).SingleOrDefaultAsync(h => h.Id == id);
-            }
-            else
-            {
-                 habit = await _dataContext.Habits.SingleOrDefaultAsync(h => h.Id == id);
+                return BadRequest("InValid habit data");
             }
 
+            var habit = habitUpdate.DaysOfWeek?.Count() > 0 
+                ? await _habitService.GetHabitByIdIncludesDaysOfWeekAsync(id)
+                : await _habitService.GetHabitById(id);
 
             if (habit == null)
+            {
                 return NotFound();
+            }
 
-            habit.DaysOfWeek.Clear();
-
-            habit.Name = habitUpdate.Name ?? habit.Name;
-
-            habit.Description = habitUpdate.Description ?? habit.Description;
-
-            habit.LastUpdateDate  = DateTime.UtcNow;
-
-            if (!string.IsNullOrEmpty(habitUpdate.UrlImage))
-                habit.UrlImage = habitUpdate.UrlImage;
-
-            if (habitUpdate.DaysOfWeek.Count != 0)
-                habit.DaysOfWeek = _dataContext.DaysOfTheWeek.Where(d => habitUpdate.DaysOfWeek.Contains(d.Id)).ToList();
+            _habitService.UpdateHabitProperties(habit, habitUpdate);
 
             _dataContext.Habits.Update(habit);
             await _dataContext.SaveChangesAsync();

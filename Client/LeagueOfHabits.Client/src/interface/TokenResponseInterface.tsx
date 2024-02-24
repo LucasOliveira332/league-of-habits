@@ -1,4 +1,4 @@
-export default interface TokenResponseDTO{
+export default interface TokenResponseInterface{
   tokenType: string
   accessToken: string
   expiresIn: number

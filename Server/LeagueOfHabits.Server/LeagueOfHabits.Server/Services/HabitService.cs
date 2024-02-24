@@ -76,7 +76,6 @@ namespace LeagueOfHabits.Server.Repositories
 
             if (habitUpdate.DaysOfWeek?.Count > 0)
             {
-
                 habit.DaysOfWeek.Clear();
                 habit.DaysOfWeek = await _dataContext.DaysOfTheWeek.Where(d => habitUpdate.DaysOfWeek.Contains(d.Id)).ToListAsync();
 

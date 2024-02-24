@@ -1,7 +1,7 @@
 import { apiUrl } from '../../config/config.tsx';
 import UserLoginDTO from '../request/UserLoginDTO.tsx';
 import FetchHttpService from '../repositories/FetchHttpRepository.tsx';
-import tokenResponseDTO from '../response/TokenReponseDTO.tsx'
+import tokenResponseDTO from '../interface/TokenResponseInterface.tsx'
 import LocalStorageService from './LocalStorageService.tsx';
 
 class UserRepository {
@@ -9,9 +9,8 @@ class UserRepository {
     const method = 'POST';
     const header = { 'Content-Type': 'application/json' };
 
-    const request = new FetchHttpService()
     try{
-      const response: tokenResponseDTO = await request.makeRequest(
+      const response: tokenResponseDTO = await FetchHttpService.makeRequest(
         apiUrl + 'login', 
         method, 
         header, 

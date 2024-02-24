@@ -95,13 +95,15 @@ namespace LeagueOfHabits.Server.Controllers
             return Ok();
         }
         [HttpGet("CompleteDays"), Authorize]
-        public async Task<IActionResult> GetCheckdDays()
+        public async Task<ActionResult<List<CompleteDaysResponseDTO>>> GetCheckdDays()
         {
+            //Task<ActionResult<List<HabitCreateDTO>>>
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             var completeDays = await _habitService.GetCompleteDaysAsync(userId);
 
             return Ok(completeDays);
+
         }
 
         [HttpPut("{id}"), Authorize]

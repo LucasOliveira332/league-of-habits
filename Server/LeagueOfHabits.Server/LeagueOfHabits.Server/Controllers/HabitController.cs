@@ -66,7 +66,7 @@ namespace LeagueOfHabits.Server.Controllers
             var completeDays = new CompleteDay() { Data = DateTime.Now.Date, HabitId = id };
 
             var existingDay = await _dataContext.CompleteDays
-                .SingleOrDefaultAsync(c => c.HabitId == id && c.Data.Day == completeDays.Data.Day);
+                .SingleOrDefaultAsync(c => c.HabitId == id && c.Data == completeDays.Data);
 
             if (existingDay != null) return BadRequest();
 
@@ -97,7 +97,6 @@ namespace LeagueOfHabits.Server.Controllers
         [HttpGet("CompleteDays"), Authorize]
         public async Task<ActionResult<List<CompleteDaysResponseDTO>>> GetCheckdDays()
         {
-            //Task<ActionResult<List<HabitCreateDTO>>>
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             var completeDays = await _habitService.GetCompleteDaysAsync(userId);

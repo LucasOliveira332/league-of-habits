@@ -6,16 +6,16 @@ const MONTHDAYS = Array.from({ length: 35 }, (_, index) => index + 1);
 const YEARMONTHS = Array.from({ length: 12 }, (_, index) => index);
 
 export const RenderHeatMap = () => {
-  const [checkedDays, setCheckedDays] = useState(null);
+  const [completeDays, setCompleteDays] = useState(null);
 
-  checkdDays(setCheckedDays)
-  const formatter = dateFormatter();
+  getCompleteDays(setCompleteDays)
+  const dateFormatter = getDateFormatter();
 
   return (
     <>
       <div className="checkbox-months">
         {YEARMONTHS.map((month) => {
-          return <MonthCheckBox monthNumber={month} dateList={checkedDays} dateFormatter={formatter} key={month} />;
+          return <MonthCheckBox monthNumber={month} dateList={completeDays} dateFormatter={dateFormatter} key={month} />;
         })}
       </div>
     </>
@@ -26,15 +26,16 @@ function MonthCheckBox({ monthNumber, dateList, dateFormatter}: { monthNumber: n
   const date = new Date(2024, monthNumber);
   const firstDayOfTheWeek = date.getDay();
   const finalDate = new Date(2024, monthNumber + 1, 0).getDate() + firstDayOfTheWeek;
-  console.log(new Date(2024, monthNumber + 1, 0).getDate());
-  console.log(firstDayOfTheWeek)
+  
   return (
     <div className="month">
       {MONTHDAYS.map((_, index) => {
         if (index < firstDayOfTheWeek) {
           return <span key={index} className="box checkbox-hidden"></span>;
         } else if (index < finalDate) {
+
           const currentDate = new Date(2024, monthNumber, index + 1 - firstDayOfTheWeek)
+
           const formatDate = dateFormatter.format(currentDate);
 
           return (
@@ -52,7 +53,7 @@ function MonthCheckBox({ monthNumber, dateList, dateFormatter}: { monthNumber: n
   );
 }
 
-function dateFormatter(){
+function getDateFormatter(){
   const formatDate = new Intl.DateTimeFormat('pt-BR', {
     weekday: 'short',
     year: 'numeric',
@@ -63,7 +64,7 @@ function dateFormatter(){
   return formatDate
 }
 
-function checkdDays(setCheckedDays : any){
+function getCompleteDays(setCheckedDays : any){
   const habitService = new HabitService()
 
   useEffect(() => {

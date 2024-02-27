@@ -76,6 +76,12 @@ function getCompleteDays(setCheckedDays : any){
 }
 
 function verifyIfDayIsChecked(timeInMilesseconds, dateList : Date[]) {
+  const habitCount = 7
+  const completeDaysCount = 7
+
+  const pocentage = completeDaysCount * 1.0 / habitCount
+  console.log(pocentage)
+
   const boxStyle = {
     backgroundColor: '#161b22',
     width: '2px',
@@ -86,7 +92,7 @@ function verifyIfDayIsChecked(timeInMilesseconds, dateList : Date[]) {
   if(dateList){
     const isCheckd = dateList.includes(timeInMilesseconds)
     if (isCheckd){
-      boxStyle.backgroundColor = `rgba(57, 211, 83, ${0.5 + 0.5})`;
+      boxStyle.backgroundColor = `rgba(57, 211, 83, ${pocentage})`;
       return boxStyle;
     }else{
       boxStyle.backgroundColor = '#161b22';

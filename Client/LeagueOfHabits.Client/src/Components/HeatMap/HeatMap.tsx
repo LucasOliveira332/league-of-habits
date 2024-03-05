@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import HabitService from '../../services/HabitService';
 import '../../assets/styles/HeatMap.css';
+import Box from './box';
 
 const MONTHDAYS = Array.from({ length: 35 }, (_, index) => index + 1);
 const YEARMONTHS = Array.from({ length: 12 }, (_, index) => index);
@@ -18,6 +19,7 @@ export const RenderHeatMap = () => {
           return <MonthCheckBox monthNumber={month} dateList={completeDays} dateFormatter={dateFormatter} key={month} />;
         })}
       </div>
+      <Box />
     </>
   );
 };
@@ -80,7 +82,6 @@ function verifyIfDayIsChecked(timeInMilesseconds, dateList : Date[]) {
   const completeDaysCount = 7
 
   const pocentage = completeDaysCount * 1.0 / habitCount
-  console.log(pocentage)
 
   const boxStyle = {
     backgroundColor: '#161b22',

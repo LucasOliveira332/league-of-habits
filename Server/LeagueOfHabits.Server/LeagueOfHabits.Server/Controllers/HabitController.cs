@@ -94,7 +94,7 @@ namespace LeagueOfHabits.Server.Controllers
 
             return Ok();
         }
-        [HttpGet("CompleteDays"), Authorize]
+        [HttpGet("completeDays"), Authorize]
         public async Task<ActionResult<List<CompleteDaysResponseDTO>>> GetCheckdDays()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

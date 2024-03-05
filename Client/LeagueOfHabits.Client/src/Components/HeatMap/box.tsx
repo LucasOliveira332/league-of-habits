@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
 
-const completeDay = {
-  "dayOfWeek": 0,
+const x = {
 	"habits": ["Corrida", "Estudo", "Academia"],
-	"ExpectedTotal": 7,
-	"Total": 0
+	"Total": 2,
+	"ExpectedTotal": 7
 }
 
 const Box = () => {
-  [completeDays, setCompleteDays] = useState(completeDay)
+  const [completeDays, setCompleteDays] = useState(x)
+
   return (
     <>
-      <span style={setPorcentage(7 , 4)}>Hello world</span>
+      <span style={setPorcentage(completeDays.ExpectedTotal, completeDays.Total)}>Hello world</span>
     </>
   )
 }

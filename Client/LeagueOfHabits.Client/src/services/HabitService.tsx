@@ -23,12 +23,24 @@ export default class HabitService {
       if(!response){
         console.log('Get habits failed. No response received.')
       }else{
-        const mapList = response.map((habit) => {
-          return habit.completeDays
-        });
-        console.log(mapList)
-        const daysOfWeek: Date[]= response[0].completeDays.map(date => new Date(date).getTime())
-        return daysOfWeek
+        // const daysOfWeek: Date[]= response[0].completeDays.map(date => new Date(date).getTime())
+
+        const completeDays = [
+          {
+            dayComplete: 1709521200000,
+            habits: ["Corrida", "Estudo", "Academia"],
+            Total: 3,
+            ExpectedTotal: 5
+          },
+          {
+            dayComplete: 1709607600000,
+            habits: ["Corrida", "Estudo", "Academia", "Gym", "Reading"],
+            Total: 5,
+            ExpectedTotal: 5
+          }
+        ]
+
+        return completeDays//daysOfWeek
       }
     }catch(error){
       console.log("An error ocorred during get habits")

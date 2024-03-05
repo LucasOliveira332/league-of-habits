@@ -45,7 +45,7 @@ function MonthCheckBox({ monthNumber, dateList, dateFormatter}: { monthNumber: n
               key={index}
               title={formatDate}
               style={
-                verifyIfDayIsChecked(currentDate.getTime(), dateList)
+                verifyIfDayIsChecked(currentDate.getTime(), dateList ?? null)
               }
             ></span>
           );
@@ -71,13 +71,15 @@ function getCompleteDays(setCheckedDays : any){
 
   useEffect(() => {
     const fetchData = async () => {
-      setCheckedDays(await habitService.getCheckedDays());
+      const completeDays = await habitService.getCheckedDays()
+      setCheckedDays(completeDays);
     }
   fetchData();
   }, []);
 }
 
-function verifyIfDayIsChecked(timeInMilesseconds, dateList : Date[]) {
+function verifyIfDayIsChecked(timeInMilesseconds, dateList) {
+  
   const habitCount = 7
   const completeDaysCount = 7
 
@@ -91,6 +93,13 @@ function verifyIfDayIsChecked(timeInMilesseconds, dateList : Date[]) {
   };
 
   if(dateList){
+    const day = 
+    
+    dateList.forEach(element => {
+      return element.dayComplete == timeInMilesseconds
+    });
+    console.log(day)
+    
     const isCheckd = dateList.includes(timeInMilesseconds)
     if (isCheckd){
       boxStyle.backgroundColor = `rgba(57, 211, 83, ${pocentage})`;

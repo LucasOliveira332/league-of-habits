@@ -15,10 +15,11 @@ export default class HabitService {
                      'Authorization': accessToken};
 
     try{
-      const response : CompleteDaysInterface[] = await FetchHttpService.makeRequest(
-        apiUrl + 'Habit/CompleteDays',
-        method,
-        header)
+      // const response : CompleteDaysInterface[] = await FetchHttpService.makeRequest(
+      //   apiUrl + 'Habit/CompleteDays',
+      //   method,
+      //   header)
+      const response = true
 
       if(!response){
         console.log('Get habits failed. No response received.')
@@ -27,13 +28,13 @@ export default class HabitService {
 
         const completeDays = [
           {
-            dayComplete: 1709521200000,
+            day: 1709607600000,
             habits: ["Corrida", "Estudo", "Academia"],
             Total: 3,
             ExpectedTotal: 5
           },
           {
-            dayComplete: 1709607600000,
+            day: 1709521200000,
             habits: ["Corrida", "Estudo", "Academia", "Gym", "Reading"],
             Total: 5,
             ExpectedTotal: 5

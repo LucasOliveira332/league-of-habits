@@ -1,22 +1,25 @@
 import { useEffect, useState } from 'react';
 import HabitService from '../../services/HabitService';
 import '../../assets/styles/HeatMap.css';
-import Box from './box';
+import daysInfo from '../../interface/DaysInfoInterface';
+import Box from './Box/Box';
 
 const MONTHDAYS = Array.from({ length: 35 }, (_, index) => index + 1);
 const YEARMONTHS = Array.from({ length: 12 }, (_, index) => index);
 
 export const RenderHeatMap = () => {
-  const [completeDays, setCompleteDays] = useState(null);
+  const [daysInfo, setdaysInfo] = useState(null);
 
-  getCompleteDays(setCompleteDays)
+  getdaysInfo(setdaysInfo)
   const dateFormatter = getDateFormatter();
-
+  
+  const days = daysInfo ? daysInfo.map(dayInfo => dayInfo.day) : null
+  
   return (
     <>
       <div className="checkbox-months">
         {YEARMONTHS.map((month) => {
-          return <MonthCheckBox monthNumber={month} dateList={completeDays} dateFormatter={dateFormatter} key={month} />;
+          return <MonthCheckBox monthNumber={month} daysInfo={days} days={days} dateFormatter={dateFormatter} key={month} />;
         })}
       </div>
       <Box />
@@ -24,7 +27,7 @@ export const RenderHeatMap = () => {
   );
 };
 
-function MonthCheckBox({ monthNumber, dateList, dateFormatter}: { monthNumber: number , dateList: Date[], dateFormatter: Intl.DateTimeFormat}) {
+function MonthCheckBox({ monthNumber, daysInfo, days, dateFormatter}: { monthNumber: number , daysInfo: daysInfo[], days: number, dateFormatter: Intl.DateTimeFormat}) {
   const date = new Date(2024, monthNumber);
   const firstDayOfTheWeek = date.getDay();
   const finalDate = new Date(2024, monthNumber + 1, 0).getDate() + firstDayOfTheWeek;
@@ -45,7 +48,7 @@ function MonthCheckBox({ monthNumber, dateList, dateFormatter}: { monthNumber: n
               key={index}
               title={formatDate}
               style={
-                verifyIfDayIsChecked(currentDate.getTime(), dateList ?? null)
+                verifyIfDayIsChecked(currentDate.getTime(), days ?? null)
               }
             ></span>
           );
@@ -66,24 +69,23 @@ function getDateFormatter(){
   return formatDate
 }
 
-function getCompleteDays(setCheckedDays : any){
+function getdaysInfo(setCheckedDays : any){
   const habitService = new HabitService()
-
   useEffect(() => {
     const fetchData = async () => {
-      const completeDays = await habitService.getCheckedDays()
-      setCheckedDays(completeDays);
+      const daysInfo = await habitService.getCheckedDays()
+      setCheckedDays(daysInfo);
     }
   fetchData();
   }, []);
 }
 
-function verifyIfDayIsChecked(timeInMilesseconds, dateList) {
+function verifyIfDayIsChecked(timeInMilesseconds, days) {
   
   const habitCount = 7
-  const completeDaysCount = 7
+  const daysInfoCount = 7
 
-  const pocentage = completeDaysCount * 1.0 / habitCount
+  const pocentage = daysInfoCount * 1.0 / habitCount
 
   const boxStyle = {
     backgroundColor: '#161b22',
@@ -91,24 +93,15 @@ function verifyIfDayIsChecked(timeInMilesseconds, dateList) {
     padding: '5px',
     borderRadius: '2px'
   };
-
-  if(dateList){
-    const day = 
-    
-    dateList.forEach(element => {
-      return element.dayComplete == timeInMilesseconds
-    });
-    console.log(day)
-    
-    const isCheckd = dateList.includes(timeInMilesseconds)
-    if (isCheckd){
+  if (days){
+    if (days.includes(timeInMilesseconds)){
       boxStyle.backgroundColor = `rgba(57, 211, 83, ${pocentage})`;
       return boxStyle;
-    }else{
+    }
+    else{
       boxStyle.backgroundColor = '#161b22';
       return boxStyle;
     }
-  } 
-
-  return boxStyle
+  }
+  else null;
 }

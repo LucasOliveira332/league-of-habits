@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import ModelDayInfo from '../ModelDayInfo/ModelDayInfo';
 
 const x = {
 	"habits": ["Corrida", "Estudo", "Academia"],
@@ -11,6 +12,7 @@ const Box = () => {
 
   return (
     <>
+      <ModelDayInfo />
       <span style={setPorcentage(completeDays.ExpectedTotal, completeDays.Total)}>Hello world</span>
     </>
   )

@@ -1,0 +1,11 @@
+.model {
+  background-color: white;
+  width: 6rem;
+  position: absolute;
+  padding: 5px;
+  text-align: left;
+}
+
+.mode .progress-bar{
+  background: red;
+}
